@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لغة الرياضيات المتحركة بالبايثون - د. بن الدين بويعقوب</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* الأساسيات */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-purple: #8B5CF6;
+            --light-purple: #A78BFA;
+            --dark-purple: #7C3AED;
+            --python-blue: #3776AB;
+            --python-yellow: #FFD43B;
+            --white: #ffffff;
+            --red: #e74c3c;
+            --green: #2ecc71;
+            --yellow: #f1c40f;
+            --gray: #f5f5f5;
+            --dark-gray: #333;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--light-purple) 0%, var(--white) 100%);
+            color: var(--dark-gray);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* الترويسة */
+        header {
+            background: linear-gradient(to right, var(--dark-purple), var(--primary-purple));
+            color: var(--white);
+            padding: 30px 0;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            margin-left: 15px;
+            color: var(--python-yellow);
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .logo p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* قسم المقدمة */
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+            background-color: var(--white);
+            border-radius: 20px;
+            margin: 40px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--python-blue), var(--python-yellow), var(--primary-purple));
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            color: var(--dark-purple);
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            color: #555;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(to right, var(--primary-purple), var(--dark-purple));
+            color: var(--white);
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(139, 92, 246, 0.3);
+            border: none;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-whatsapp {
+            background: linear-gradient(to right, #25D366, #128C7E);
+        }
+
+        .btn-python {
+            background: linear-gradient(to right, var(--python-blue), var(--python-yellow));
+            color: var(--dark-gray);
+        }
+
+        /* قسم المحتوى */
+        .content-section {
+            background-color: var(--white);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--dark-purple);
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, var(--python-blue), var(--python-yellow), var(--primary-purple));
+            border-radius: 2px;
+        }
+
+        /* معرض الصور */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .gallery-item {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            background-color: var(--gray);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .gallery-item .image-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.05);
+            color: var(--dark-gray);
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .gallery-item .image-placeholder i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--primary-purple);
+        }
+
+        /* قسم الفيديوهات */
+        .videos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .video-item {
+            background-color: var(--gray);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            height: 200px;
+        }
+
+        .video-item iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-item:hover {
+            transform: translateY(-5px);
+        }
+
+        /* قسم المميزات */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .feature {
+            background-color: var(--gray);
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            border-left: 5px solid var(--primary-purple);
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature i {
+            font-size: 2.5rem;
+            color: var(--primary-purple);
+            margin-bottom: 15px;
+        }
+
+        .feature h3 {
+            color: var(--dark-purple);
+            margin-bottom: 15px;
+        }
+
+        /* قسم الفهرس */
+        .index {
+            background-color: var(--gray);
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .index-columns {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .index-list {
+            list-style-type: none;
+        }
+
+        .index-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+            padding-right: 20px;
+        }
+
+        .index-list li::before {
+            content: "•";
+            color: var(--primary-purple);
+            font-weight: bold;
+            position: absolute;
+            right: 0;
+        }
+
+        /* قسم التواصل */
+        .contact {
+            background: linear-gradient(135deg, var(--light-purple) 0%, var(--white) 100%);
+            padding: 40px;
+            border-radius: 20px;
+            margin: 40px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .contact-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .contact-method {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .contact-method:hover {
+            transform: translateY(-5px);
+        }
+
+        .contact-method i {
+            font-size: 3rem;
+            color: var(--primary-purple);
+            margin-bottom: 15px;
+        }
+
+        .contact-method h3 {
+            color: var(--dark-purple);
+            margin-bottom: 15px;
+        }
+
+        /* التذييل */
+        footer {
+            background: linear-gradient(to right, var(--dark-purple), var(--primary-purple));
+            color: var(--white);
+            padding: 40px 0;
+            border-radius: 20px 20px 0 0;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 300px;
+            margin-bottom: 20px;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-section h3::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--python-yellow);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--python-yellow);
+            padding-right: 5px;
+        }
+
+        .social-icons {
+            display: flex;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .social-icons a:hover {
+            background-color: var(--python-yellow);
+            transform: translateY(-3px);
+            color: var(--dark-gray);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* التجاوب مع الشاشات المختلفة */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .contact-methods {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- الترويسة -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-code"></i>
+                    <div>
+                        <h1>لغة الرياضيات المتحركة بالبايثون</h1>
+                        <p>د. بن الدين بويعقوب - خبير الرياضيات الديناميكية</p>
+                    </div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#about">عن الكتاب</a></li>
+                        <li><a href="#manim">ما هي Manim؟</a></li>
+                        <li><a href="#gallery">معرض الصور</a></li>
+                        <li><a href="#videos">الفيديوهات</a></li>
+                        <li><a href="#features">المميزات</a></li>
+                        <li><a href="#index">فهرس المحتويات</a></li>
+                        <li><a href="#contact">شراء الكتاب</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="container">
+        <!-- قسم المقدمة -->
+        <section class="hero">
+            <h2>اكتشف عالم الرياضيات المتحركة مع Manim</h2>
+            <p>كتاب "لغة الرياضيات المتحركة بالبايثون" هو الدليل الشامل لتعلم واستخدام مكتبة Manim الرائدة في إنشاء الرسوم المتحركة الرياضية، من تأليف الخبير العالمي الدكتور بن الدين بويعقوب. يقدم الكتاب منهجية متكاملة تبدأ من الأساسيات وصولاً إلى الاحتراف.</p>
+            <a href="#contact" class="btn">شراء الكتاب الآن</a>
+            <a href="https://wa.me/qr/JQTZSG362IKTA1" class="btn btn-whatsapp">
+                <i class="fab fa-whatsapp"></i> التواصل عبر واتساب
+            </a>
+            <a href="#manim" class="btn btn-python">
+                <i class="fab fa-python"></i> تعلم Manim
+            </a>
+        </section>
+
+        <!-- قسم عن الكتاب -->
+        <section id="about" class="content-section">
+            <h2 class="section-title">عن الكتاب</h2>
+            <p>في عصر التكنولوجيا والتعليم الرقمي، تبرز مكتبة Manim كأداة ثورية لتحويل المفاهيم الرياضية المجردة إلى عروض بصرية تفاعلية ومتحركة. هذا الكتاب يمثل نقلة نوعية في عالم تعليم الرياضيات باستخدام التقنيات الحديثة.</p>
+            <p>يأتي هذا الكتاب كنتاج لخبرة سنوات طويلة في مجال الرياضيات الديناميكية، حيث يجمع بين الأصالة الأكاديمية والابتكار التقني. الكتاب موجه للمعلمين، الطلاب، الباحثين، ومحبي الرياضيات الذين يرغبون في إضافة بُعد بصري جذاب لعملهم التعليمي والبحثي.</p>
+        </section>
+
+        <!-- قسم ما هي Manim -->
+        <section id="manim" class="content-section">
+            <h2 class="section-title">ما هي مكتبة Manim؟</h2>
+            <p>Manim (Mathematical Animation Engine) هي مكتبة بايثون مفتوحة المصدر تم تطويرها originally من قبل Grant Sanderson (قناة 3Blue1Brown الشهيرة) لإنشاء رسوم متحركة رياضية دقيقة وجذابة.</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-cube"></i>
+                    <h3>رسوم متحركة دقيقة</h3>
+                    <p>إنشاء رسوم متحركة رياضية بدقة عالية وجمالية فائقة</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-code"></i>
+                    <h3>برمجة مرنة</h3>
+                    <p>التحكم الكامل في التفاصيل عبر كود بايثون بسيط وقوي</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>تعليم تفاعلي</h3>
+                    <p>أداة مثالية لإنشاء محتوى تعليمي تفاعلي وجذاب</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 40px; color: var(--dark-purple);">استعمال Manim في التعليم الرقمي</h3>
+            <p>تمثل Manim ثورة في مجال التعليم الرقمي، حيث تمكن المعلمين من:</p>
+            <ul style="list-style-type: none; margin: 20px 0;">
+                <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✓ تحويل المعادلات المجردة إلى عروض بصرية متحركة</li>
+                <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✓ شرح المفاهيم المعقدة بطريقة سهلة وجذابة</li>
+                <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✓ إنشاء محتوى تعليمي تفاعلي يمكن تكييفه حسب احتياجات الطلاب</li>
+                <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✓ تطوير مهارات البرمجة والتفكير الحسابي لدى الطلاب</li>
+            </ul>
+        </section>
+
+        <!-- معرض الصور -->
+        <section id="gallery" class="content-section">
+            <h2 class="section-title">معرض الصور</h2>
+            <div class="gallery">
+                <!-- الصور المضافة -->
+                <div class="gallery-item" style="background-image: url('https://i.ibb.co/s9gGGHk7/photo1.jpg')">
+                    <div class="image-placeholder" style="display: none;">
+                        <i class="fas fa-image"></i>
+                        <span>أمثلة من الكتاب</span>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" style="background-image: url('https://i.ibb.co/yc47q3bG/photo2.jpg')">
+                    <div class="image-placeholder" style="display: none;">
+                        <i class="fas fa-image"></i>
+                        <span>إنشاءات Manim</span>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" style="background-image: url('https://i.ibb.co/Z6ZChV0Z/photo3.jpg')">
+                    <div class="image-placeholder" style="display: none;">
+                        <i class="fas fa-image"></i>
+                        <span>رسوم بيانية متقدمة</span>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" style="background-image: url('https://i.ibb.co/npMnMMt/photo4.jpg')">
+                    <div class="image-placeholder" style="display: none;">
+                        <i class="fas fa-image"></i>
+                        <span>رسوم متحركة</span>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" style="background-image: url('https://i.ibb.co/TD3SvGzT/photo5.jpg')">
+                    <div class="image-placeholder" style="display: none;">
+                        <i class="fas fa-image"></i>
+                        <span>أمثلة متقدمة</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم الفيديوهات -->
+        <section id="videos" class="content-section">
+            <h2 class="section-title">الفيديوهات التوضيحية</h2>
+            <div class="videos">
+                <!-- الفيديوهات المضافة -->
+                <div class="video-item">
+                    <iframe src="https://www.youtube.com/embed/Mgy3wDQtJlE" allowfullscreen></iframe>
+                </div>
+                
+                <div class="video-item">
+                    <iframe src="https://www.youtube.com/embed/Q0WBfNwXdxY" allowfullscreen></iframe>
+                </div>
+                
+                <div class="video-item">
+                    <iframe src="https://www.youtube.com/embed/Mgy3wDQtJlE" allowfullscreen></iframe>
+                </div>
+                
+                <div class="video-item">
+                    <iframe src="https://www.youtube.com/embed/zhwSbXq_GC0" allowfullscreen></iframe>
+                </div>
+                
+                <div class="video-item">
+                    <div class="image-placeholder">
+                        <i class="fas fa-video"></i>
+                        <span>فيديو إضافي قريباً</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم المميزات -->
+        <section id="features" class="content-section">
+            <h2 class="section-title">مميزات الكتاب</h2>
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>منهج متكامل</h3>
+                    <p>يغطي جميع أساسيات مكتبة Manim من البداية إلى الاحتراف</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-laptop-code"></i>
+                    <h3>عملي وتطبيقي</h3>
+                    <p>يقدم أمثلة عملية وإنشاءات تفاعلية تغطي جميع مجالات الرياضيات</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-users"></i>
+                    <h3>ملائم للجميع</h3>
+                    <p>مناسب للمعلمين والطلاب من المرحلة الثانوية حتى الجامعية والبحث العلمي</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-rocket"></i>
+                    <h3>أمثلة متقدمة</h3>
+                    <p>يتضمن مشاريع كاملة وتطبيقات عملية في الرياضيات والفيزياء</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-globe"></i>
+                    <h3>لغة عربية</h3>
+                    <p>أول كتاب شامل باللغة العربية يغطي مكتبة Manim بشكل متكامل</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-infinity"></i>
+                    <h3>تحديثات مستمرة</h3>
+                    <p>دعم مستمر وتحديثات مع تطور المكتبة والتقنيات</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم الفهرس -->
+        <section id="index" class="content-section">
+            <h2 class="section-title">فهرس المحتويات</h2>
+            <div class="index">
+                <div class="index-columns">
+                    <ul class="index-list">
+                        <li>مقدمة في Python وManim</li>
+                        <li>تهيئة البيئة البرمجية</li>
+                        <li>أول مشهد متحرك في Manim</li>
+                        <li>الأشكال الهندسية الأساسية</li>
+                        <li>التحريك والانتقالات</li>
+                        <li>النصوص والمعادلات الرياضية</li>
+                    </ul>
+                    <ul class="index-list">
+                        <li>الرسوم البيانية والدوال</li>
+                        <li>التكامل والتفاضل البصري</li>
+                        <li>التحويلات الهندسية</li>
+                        <li>الرسوم ثلاثية الأبعاد</li>
+                        <li>التأثيرات البصرية المتقدمة</li>
+                        <li>دمج الوسائط المتعددة</li>
+                    </ul>
+                    <ul class="index-list">
+                        <li>إنشاء فيديوهات تعليمية كاملة</li>
+                        <li>تطبيقات في الفيزياء والهندسة</li>
+                        <li>نماذج متقدمة في الرياضيات</li>
+                        <li>التوافق مع منصات التعليم</li>
+                        <li>نصائح للأداء والكفاءة</li>
+                        <li>مشاريع تطبيقية شاملة</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم التواصل وشراء الكتاب -->
+        <section id="contact" class="contact">
+            <h2 class="section-title">شراء الكتاب والتواصل</h2>
+            <p>لشراء الكتاب أو الاستفسار عن المحتوى، يمكنك التواصل معنا عبر الوسائل التالية:</p>
+            
+            <div class="contact-methods">
+                <div class="contact-method">
+                    <i class="fab fa-whatsapp"></i>
+                    <h3>واتساب</h3>
+                    <p>التواصل المباشر عبر واتساب</p>
+                    <a href="https://wa.me/qr/JQTZSG362IKTA1" class="btn btn-whatsapp" style="margin-top: 15px;">
+                        <i class="fab fa-whatsapp"></i> ابدأ المحادثة
+                    </a>
+                </div>
+                
+                <div class="contact-method">
+                    <i class="fas fa-envelope"></i>
+                    <h3>البريد الإلكتروني</h3>
+                    <p>للاستفسارات والطلبات</p>
+                    <a href="mailto:beneddineinps@gmail.com" class="btn" style="margin-top: 15px;">
+                        <i class="fas fa-envelope"></i> beneddineinps@gmail.com
+                    </a>
+                </div>
+                
+                <div class="contact-method">
+                    <i class="fas fa-phone"></i>
+                    <h3>الهاتف</h3>
+                    <p>للتواصل المباشر</p>
+                    <a href="tel:+213123456789" class="btn" style="margin-top: 15px;">
+                        <i class="fas fa-phone"></i> اتصل بنا
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- التذييل -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>معلومات التواصل</h3>
+                    <p>للاستفسارات وشراء الكتاب</p>
+                    <p>البريد الإلكتروني: beneddineinps@gmail.com</p>
+                    <p>رابط الواتساب: wa.me/qr/JQTZSG362IKTA1</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://wa.me/qr/JQTZSG362IKTA1"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>روابط سريعة</h3>
+                    <ul class="footer-links">
+                        <li><a href="#about">عن الكتاب</a></li>
+                        <li><a href="#manim">ما هي Manim؟</a></li>
+                        <li><a href="#gallery">معرض الصور</a></li>
+                        <li><a href="#videos">الفيديوهات</a></li>
+                        <li><a href="#features">المميزات</a></li>
+                        <li><a href="#index">فهرس المحتويات</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>حول المؤلف</h3>
+                    <p>الدكتور بن الدين بويعقوب هو خبير عالمي في الرياضيات الديناميكية والتعليم الرقمي، ومتخصص في استخدام التقنيات الحديثة مثل Manim وPython في تطوير مناهج الرياضيات التفاعلية. له العديد من الإسهامات الرائدة في هذا المجال.</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>جميع الحقوق محفوظة &copy; 2024 - لغة الرياضيات المتحركة بالبايثون - د. بن الدين بويعقوب</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // تأثير التمرير السلس للروابط الداخلية
+        document.querySelectorAll('nav a, .footer-links a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // إضافة تأثيرات عند التمرير
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.padding = '15px 0';
+                header.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+            } else {
+                header.style.padding = '30px 0';
+                header.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+            }
+        });
+
+        // تأثيرات للعناصر عند ظهورها
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // تطبيق التأثير على العناصر
+        document.querySelectorAll('.content-section, .feature, .gallery-item, .video-item, .contact-method').forEach(el => {
+            el.style.opacity = 0;
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+
+        // إضافة تأثيرات تفاعلية للأزرار
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px) scale(1.05)';
+            });
+            
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // تحميل الصور والتحقق منها
+        document.addEventListener('DOMContentLoaded', function() {
+            // يمكن إضافة وظائف إضافية هنا لتحميل الصور والفيديوهات
+            console.log('موقع لغة الرياضيات المتحركة بالبايثون - جاهز!');
+        });
+    </script>
+</body>
+</html>
